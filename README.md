@@ -9,6 +9,14 @@ npm install
 npm run dev
 ```
 
+## 写新文章
+
+```bash
+npm run post -- "文章标题"
+```
+
+命令会在 `src/content/blog/` 下生成一篇草稿。写完后把文件头部的 `draft: true` 改成 `draft: false`，再提交推送。
+
 ## 构建检查
 
 ```bash
