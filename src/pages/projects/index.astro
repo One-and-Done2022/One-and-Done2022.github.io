@@ -1,0 +1,22 @@
+---
+import ProjectCard from "../../components/ProjectCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projects } from "../../data/site";
+---
+
+<BaseLayout title="项目 | Chenyang Liu" description="Chenyang Liu 的公开项目与技术实践。">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-kicker">Projects</p>
+      <h1>项目与实践</h1>
+      <p>优先整理机器人运动规划、机械臂避障、Python 工具链与 AI 工程相关的公开项目。</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="grid two">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

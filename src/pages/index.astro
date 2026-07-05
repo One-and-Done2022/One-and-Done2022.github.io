@@ -1,0 +1,91 @@
+---
+import { getCollection } from "astro:content";
+import PostCard from "../components/PostCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { focusAreas, projects, site } from "../data/site";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const featuredProjects = projects.filter((project) => project.featured).slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero-content">
+      <p class="eyebrow">{site.university}</p>
+      <h1>
+        {site.name}
+        <span>{site.cnName}</span>
+      </h1>
+      <p class="hero-copy">{site.description}</p>
+      <div class="hero-actions">
+        <a class="button primary" href="/blog/">阅读博客</a>
+        <a class="button" href="/projects/">查看项目</a>
+        <a class="button" href={site.github} target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+      <ul class="focus-list" aria-label="关注方向">
+        {focusAreas.map((area) => <li>{area}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        kicker="Selected Work"
+        title="代表项目"
+        copy="围绕机器人运动规划、机械臂避障和工程工具链整理公开项目与学习实践。"
+        href="/projects/"
+        linkText="全部项目"
+      />
+      <div class="grid three">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        kicker="Writing"
+        title="最新文章"
+        copy="记录算法理解、工程复盘、工具链配置和可复现实验过程。"
+        href="/blog/"
+        linkText="文章归档"
+      />
+      {
+        posts.length > 0 ? (
+          <div class="grid three">
+            {posts.map((post) => <PostCard post={post} />)}
+          </div>
+        ) : (
+          <div class="empty-state">还没有发布文章。新增 Markdown 文件到 src/content/blog 后会自动出现在这里。</div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        kicker="About"
+        title="技术方向"
+        copy="偏好把算法问题落到能运行、能复现、能解释的工程系统里。"
+      />
+      <div class="grid two">
+        <div class="card info-card">
+          <h3>机器人与运动规划</h3>
+          <p>关注机械臂轨迹生成、避障约束、DMP/运动基元与规划算法的工程实现。</p>
+        </div>
+        <div class="card info-card">
+          <h3>AI 工程实践</h3>
+          <p>关注模型工具链、代码代理、实验记录和面向实际问题的技术方案沉淀。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const pubDate = post.data.pubDate.toLocaleDateString("zh-CN", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+---
+
+<BaseLayout title={`${post.data.title} | Chenyang Liu`} description={post.data.description}>
+  <article class="article">
+    <header>
+      <div class="post-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{pubDate}</time>
+        {post.data.tags.map((tag) => <span>{tag}</span>)}
+      </div>
+      <h1>{post.data.title}</h1>
+      <p class="section-copy">{post.data.description}</p>
+    </header>
+    <div class="article-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import PostCard from "../../components/PostCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout title="技术博客 | Chenyang Liu" description="Chenyang Liu 的技术博客归档。">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-kicker">Blog</p>
+      <h1>技术博客</h1>
+      <p>不按固定分类约束内容，优先用标签和时间线记录机器人、AI 工程与开发实践。</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      {
+        posts.length > 0 ? (
+          <div class="grid two">
+            {posts.map((post) => <PostCard post={post} />)}
+          </div>
+        ) : (
+          <div class="empty-state">还没有发布文章。新增 Markdown 文件到 src/content/blog 后会自动出现在这里。</div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

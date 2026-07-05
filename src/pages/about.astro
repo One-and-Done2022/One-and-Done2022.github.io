@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { focusAreas, site, timeline } from "../data/site";
+---
+
+<BaseLayout title="关于 | Chenyang Liu" description="Chenyang Liu 的个人介绍、技术方向与联系方式。">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-kicker">About</p>
+      <h1>{site.name} / {site.cnName}</h1>
+      <p>{site.description}</p>
+      <div class="inline-actions">
+        <a class="button primary" href={site.github} target="_blank" rel="noreferrer">GitHub</a>
+        <a class="button" href="/blog/">技术博客</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid two">
+        <div>
+          <p class="section-kicker">Profile</p>
+          <h2 class="section-title">个人简介</h2>
+          <p class="section-copy">
+            来自电子科技大学，持续关注机器人运动规划、机械臂避障、AI 工程系统和技术写作。
+            这个站点用于整理公开项目、实验笔记和长期可复用的工程经验。
+          </p>
+          <ul class="focus-list" aria-label="技术方向">
+            {focusAreas.map((area) => <li>{area}</li>)}
+          </ul>
+        </div>
+        <div class="card info-card">
+          <h3>联系方式</h3>
+          <p>GitHub 是当前公开联系方式。后续可在这里补充 Email、Google Scholar、LinkedIn 或简历链接。</p>
+          <div class="inline-actions">
+            <a class="button" href={site.github} target="_blank" rel="noreferrer">@{site.githubHandle}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="section-kicker">Timeline</p>
+      <h2 class="section-title">近期方向</h2>
+      <div class="timeline" style="margin-top: 28px;">
+        {
+          timeline.map((item) => (
+            <article class="timeline-item">
+              <div class="timeline-time">{item.time}</div>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.detail}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
